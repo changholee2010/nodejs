@@ -14,18 +14,18 @@ let fixedSalt =
 
 async function getCryptoPassword(password) {
   // 1. salting 임의의 구문. => 동일한 평문(비밀번호) -> 다른 암호값.
-  // let salt = crypto.randomBytes(64).toString("base64");
+  let salt = crypto.randomBytes(64).toString("base64");
   let dbPass =
     "ylhQLM9dRTBA3RVJjnZnKgaKt0DmjORdR2bDnb43aiLHjSUd9ijndtl0N37+ReAtK+efewkcikq8iiWVfJpJiw==";
 
   return new Promise((resolve, reject) => {
-    crypto.pbkdf2(password, fixedSalt, 100000, 64, "sha512", (err, key) => {
+    crypto.pbkdf2(password, salt, 100000, 64, "sha512", (err, key) => {
       if (err) {
         console.error(err);
         return;
       }
-      // console.log(dbPass == key.toString("base64") ? "same" : "different");
-      resolve(dbPass == key.toString("base64") ? "same" : "different");
+      console.log(key.toString("base64"));
+      resolve({ salt: salt, password: key.toString("base64") });
     });
   });
 }
