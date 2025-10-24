@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 
 const mysql = require("./sql/index");
 const mailer = require("./mailer/index");
@@ -10,6 +11,7 @@ const port = 3000;
 
 // 정적디렉토리 설정.
 app.use(express.static("public"));
+app.use(cors());
 
 // middleware setup
 app.use(express.json());
